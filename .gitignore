@@ -1,2 +1,5 @@
 # npm pkg
 node_modules
+
+# IDE
+.idea

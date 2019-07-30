@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>three.js demo</title>
+  <style>
+    body { margin: 0; }
+    /*canvas { width: 100%; height: 100% }*/
+    div#canvas-frame {
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      height: 600px;
+      background-color: #EEEEEE;
+    }
+  </style>
+</head>
+<body onload="threeStart();">
+  <div id="canvas-frame"></div>
+  <script src="../../node_modules/three/build/three.js" ></script>
+  <script>
+    // 初始化THREE.js 其实也是初始化渲染器
+    var renderer;
+    var width = document.getElementById('canvas-frame').clientWidth
+    var height = document.getElementById('canvas-frame').clientHeight
+
+    function initThree(){
+
+      renderer = new THREE.WebGLRenderer({
+        antialias: true
+      })
+      renderer.setSize(width, height)
+
+      document.getElementById('canvas-frame').append(renderer.domElement)
+      // 设置清除的颜色和透明度。
+      renderer.setClearColor(0xFFFFFF, 1.0)
+    }
+
+    // 初始化相机
+    var camera;
+    function initCamera(){
+      /**
+       * fov, aspect, near, far
+       * fov 视角
+       * aspect 纵横比
+       * near 近平面
+       * far 远平面
+       */
+      // 远景相机 远景投影，也称之为透视投影
+      camera = new THREE.PerspectiveCamera(45, width/height, 1, 10000)
+      camera.position.x = 0
+      camera.position.y = 1000
+      camera.position.z = 0
+      camera.up.x = 0;
+      camera.up.y = 0;
+      camera.up.z = 1;
+      // camera.lookAt({
+      //   x : 0,
+      //   y : 0,
+      //   z : 0
+      // });
+      // 新版本这样
+      camera.lookAt(0,0,0)
+    }
+
+    // 初始化场景
+    var scene
+    function initScene(){
+      scene = new THREE.Scene();
+    }
+
+    // 定义光照
+    var light
+    function initLight(){
+      // 平行光源
+      /**
+       * hex -- 光源颜色的RGB数值。
+       * intensity -- 光源强度的数值。
+       */
+      light = new THREE.DirectionalLight(0xFF0000, 1.0)
+      light.position.set(100, 100, 200)
+      scene.add(light)
+    }
+
+    var cube
+    function initObject(){
+      var geometry = new THREE.Geometry()
+      var material = new THREE.LineBasicMaterial({
+        vertexColors: THREE.VertexColors
+      })
+      var color1 = new THREE.Color( 0x444444 ), color2 = new THREE.Color( 0xff0000 )
+      var p1 = new THREE.Vector3(-100, 0, 100)
+      var p2 = new THREE.Vector3(100,0,-100)
+      // geometry.vertices.push(p1)
+      // geometry.vertices.push(p2)
+      geometry.vertices.push(p1,p2)
+      geometry.colors.push(color1,color2)
+
+      // var line = new THREE.Line(geometry, material, THREE.LinePieces)
+      var line = new THREE.LineSegments(geometry, material)
+      scene.add(line)
+    }
+
+    function render() {
+      renderer.clear()
+      renderer.render(scene, camera)
+      requestAnimationFrame(render)
+    }
+    function threeStart() {
+      initThree();
+      initCamera();
+      initScene();
+      initLight();
+      initObject();
+      render();
+    }
+
+  </script>
+</body>
+</html>
