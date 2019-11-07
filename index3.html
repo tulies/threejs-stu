@@ -13,6 +13,9 @@
 <body>
   <script src="../../node_modules/three/build/three.js" ></script>
   <script>
+
+    // 场景/相机+渲染器。
+
     // new 场景
     var scene = new THREE.Scene();
     // new 透视相机
@@ -25,7 +28,6 @@
     document.body.appendChild(renderer.domElement);
 
 
-
     // 定义几何立方体
     var geometry = new THREE.CubeGeometry(1,1,1);
     // 定义材质
@@ -34,6 +36,7 @@
     var cube = new THREE.Mesh(geometry, material);
     // 把立方体放到场景中
     // scene.add(cube);
+
 
     // 添加一个坐标系
     var axesHelper = new THREE.AxesHelper(5)
@@ -54,7 +57,6 @@
       objectTotal.rotation.x += 0.01
       objectTotal.rotation.y += 0.01
       objectTotal.rotation.z += 0.01
-
 
       // cube.rotation.x += 0.01;
         // axesHelper.rotation.x += 0.1

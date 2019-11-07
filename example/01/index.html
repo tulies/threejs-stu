@@ -15,6 +15,7 @@
   <script>
     // new 场景
     var scene = new THREE.Scene();
+
     // new 透视相机
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     // new 渲染器
@@ -30,7 +31,7 @@
     // 定义材质
     var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
     // 匹配到一起，
-    var cube = new THREE.Mesh(geometry, material); 
+    var cube = new THREE.Mesh(geometry, material);
 
 
     // 把立方体放到场景中
@@ -40,7 +41,7 @@
     // camera.position.x = 1.2;
 
     camera.position.z = 5;
-    
+
     function render() {
         requestAnimationFrame(render);
         cube.rotation.x += 0.1;
