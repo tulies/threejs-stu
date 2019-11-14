@@ -1,9 +1,9 @@
 var width = document.getElementById('canvas-frame').clientWidth;
 var height = document.getElementById('canvas-frame').clientHeight;
 
-// 初始化THREE.js，其实也是初始化渲染器
+// 初始化渲染器
 var renderer;
-function initThree(){
+function initRenderer(){
   renderer = new THREE.WebGLRenderer({
     // 是否抗锯齿
     antialias: true
@@ -100,7 +100,7 @@ function render(){
 }
 
 function threeStart(){
-  initThree()
+  initRenderer()
   initCamera()
   initScene()
   initLight()
