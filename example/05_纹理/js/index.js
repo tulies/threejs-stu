@@ -21,7 +21,7 @@ function init(){
   // 场景
   scene = new THREE.Scene()
   var geometry = new THREE.PlaneGeometry(600,400,1,1)
-  // 下面这个纹理坐标没有搞懂什么意思
+  // 下面这个纹理坐标暂时没有搞懂什么意思，有点思路暂不深究
   // geometry.vertices[0].uv = new THREE.Vector2(0,0);
   // geometry.vertices[1].uv = new THREE.Vector2(2,0);
   // geometry.vertices[2].uv = new THREE.Vector2(2,2);
