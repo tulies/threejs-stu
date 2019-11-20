@@ -1,7 +1,7 @@
 
 (function(){
 
-  if ( !! WEBGL.isWebGLAvailable() ) {
+  if ( ! WEBGL.isWebGLAvailable() ) {
     document.body.append(WEBGL.getWebGLErrorMessage());
     return
   }
