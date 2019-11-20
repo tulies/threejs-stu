@@ -4,6 +4,7 @@
     document.body.append(WEBGL.getWebGLErrorMessage());
     return
   }
+  var stats;
 
   var width = document.getElementById('canvas-frame').clientWidth
   var height = document.getElementById('canvas-frame').clientHeight
@@ -12,37 +13,25 @@
   var camera;
   var scene;
   function init(){
-
     // 相机
-    camera = new THREE.PerspectiveCamera(60, width/height, 0.01,10000);
+    camera = new THREE.PerspectiveCamera(60, width/height, 0.01,100000);
     // camera.position.z = 0.2;
-    camera.position.set(0, 0, 2750)
-    camera.lookAt(0, 0, 0)
-    camera.up.set(0, 1, 0)
+    camera.position.set(0, 0, 2550)
+    // camera.lookAt(0, 0, 0)
+    // camera.up.set(0, 1, 0)
 
     // 场景
     scene = new THREE.Scene()
     scene.fog = new THREE.Fog(0x050505, 2000, 3500)
     // 光
     var dirLight = new THREE.DirectionalLight( 0xffffff, 0.5 )
-    dirLight.position.set(1,1,10100)
+    dirLight.position.set(1,1,1)
     scene.add(dirLight)
 
     var dirLight2 = new THREE.DirectionalLight( 0xffffff, 1.5 )
     dirLight2.position.set(0,1,0)
     scene.add(dirLight2)
     // 对象
-    // var material = new THREE.MeshLambertMaterial({color:0xFFFFFF, side: THREE.DoubleSide})
-    // var loader = new THREE.VTKLoader();
-    // loader.load('models/vtk/bunny.vtk',function(geometry){
-    //   geometry.computeVertexNormals();
-    //   console.log(geometry)
-    //   var mesh = new THREE.Mesh(geometry, material)
-    //   mesh.position.setY(-0.09)
-    //   scene.add(mesh)
-    // })
-
-    // var triangles = 1600000
     var triangles = 1600000
 
     var geometry = new THREE.BufferGeometry()
@@ -124,6 +113,7 @@
       normals[i+8] = nz
 
       // 设置colors
+
       var vx = (x/n) + 0.5
       var vy = (y/n) + 0.5
       var vz = (z/n) + 0.5
@@ -141,24 +131,30 @@
       colors[i+6] = color.r
       colors[i+7] = color.g
       colors[i+8] = color.b
-
     }
 
     geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3))
+    // 在这个例子里 这个法向量我其实没看到有什么作用
     geometry.addAttribute('normal', new THREE.BufferAttribute(normals, 3))
     geometry.addAttribute('color', new THREE.BufferAttribute(colors, 3))
     geometry.computeBoundingSphere()
 
+    // console.log(geometry)
     var material = new THREE.MeshPhongMaterial({
-      color: 0xAAAAAA,
-      specular: 0xFFFFFF,
+      // color: 0xAAAAAA,
+      // specular: 0xFFFFFF,
       shininess: 250,
-      side: THREE.DoubleSide,
-      vertexColors: THREE.VertexColors
+      // side: THREE.DoubleSide,
+      vertexColors: THREE.VertexColors,
+      shading: THREE.FlatShading,
     })
     mesh = new THREE.Mesh(geometry, material)
-    scene.add(mesh)
 
+    // var material = new THREE.PointsMaterial( { size: 1, vertexColors: THREE.VertexColors } );
+    // mesh = new THREE.Points( geometry, material );
+
+
+    scene.add(mesh)
 
     // 渲染器
     renderer = new THREE.WebGLRenderer({antialias: false})
@@ -169,16 +165,25 @@
     renderer.gammaOutput = true
     document.getElementById('canvas-frame').append(renderer.domElement)
 
+    initStats()
     render()
   }
   // console.log(121)
 
+  function initStats(){
+    stats = new Stats();
+    stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild( stats.dom );
+  }
+
   function render(){
+    stats.update();
+
     // console.log(121)
     var time = Date.now() * 0.01
     mesh.rotation.y = time * 0.1
     mesh.rotation.z = time * 0.1
-    // mesh.rotation.x = time * 0.5
+    mesh.rotation.x = time * 0.1
     renderer.render( scene, camera );
     requestAnimationFrame( render );
   }
