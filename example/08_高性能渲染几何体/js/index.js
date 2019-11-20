@@ -32,7 +32,7 @@
     dirLight2.position.set(0,1,0)
     scene.add(dirLight2)
     // 对象
-    var triangles = 1600000
+    var triangles = 2000000
 
     var geometry = new THREE.BufferGeometry()
     var positions = new Float32Array( triangles * 3 * 3)
