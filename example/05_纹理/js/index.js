@@ -7,7 +7,7 @@ var scene;
 var texture;
 function init(){
   // 渲染器
-  renderer = new THREE.WebGLRenderer({antialias: true})
+  renderer = new THREE.WebGLRenderer({antialias: true}) 
   renderer.setSize(width, height)
   document.getElementById('canvas-frame').append(renderer.domElement)
   renderer.setClearColor(0xFFFFFF, 1)
