@@ -3,23 +3,23 @@ var height = document.getElementById('canvas-frame').clientHeight;
 var stats;
 
 // 初始化THREE.js，其实也是初始化渲染器
-var renderer
+var renderer;
 function initRenderer(){
   renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(width, height)
-  document.getElementById('canvas-frame').append(renderer.domElement)
-  renderer.setClearColor('#fff',1)
+  renderer.setSize(width, height);
+  document.getElementById('canvas-frame').append(renderer.domElement);
+  renderer.setClearColor('#fff',1);
 }
 
-var camera
+var camera;
 function initCamera(){
-  camera = new THREE.PerspectiveCamera(45,width/height, 1, 10000)
+  camera = new THREE.PerspectiveCamera(45,width/height, 1, 10000);
   camera.position.set(0,0,600);
   camera.up.set(0,1,0);
-  camera.lookAt(0,0,0)
+  camera.lookAt(0,0,0);
 }
 
-var scene
+var scene;
 function initScene(){
   scene = new THREE.Scene();
 }
@@ -32,14 +32,14 @@ function initLight(){
   // scene.add(light1)
 
   // 点光源-- 可以看到物体表面的颜色深浅度变化
-  var light2 = new THREE.PointLight(0x00FF00)
-  light2.position.set(0,0,300)
-  scene.add(light2)
+  var light2 = new THREE.PointLight(0x00FF00);
+  light2.position.set(0,0,300);
+  scene.add(light2);
 }
 
 // 设置场景中的物体
 // 关键的几个东西，Geometry 模型、material 材质、
-var mesh
+var mesh;
 function initObject(){
   /*
     【CircleGeometry】 一个用来创建圆柱几何体模型的类
@@ -54,13 +54,13 @@ function initObject(){
   */
   var geometry = new THREE.CylinderGeometry(50,80,150);
   // 兰伯特网孔材料 MeshLambertMaterial，一种考虑光照的材质（部分材料是不受光源影响，比如MeshBasicMaterial等）
-  var material = new THREE.MeshLambertMaterial({ color: 0xFFFFFF})
+  var material = new THREE.MeshLambertMaterial({ color: 0xFFFFFF});
 
   // 这个mesh 我也有疑问，和LineSegments实例出来的有啥区别，都是整合了geometry和material的。
-  mesh = new THREE.Mesh(geometry, material)
+  mesh = new THREE.Mesh(geometry, material);
   // mesh.position = new THREE.Vector3(0,0,0)
-  mesh.position.set(0,0,0)
-  scene.add(mesh)
+  mesh.position.set(0,0,0);
+  scene.add(mesh);
 }
 
 function render(){
@@ -71,12 +71,12 @@ function render(){
   // // 第一种方式，移动相机位置，向左移动
   // camera.position.x += 1
   // 第二种方式，让场景里的物体动起来,向左移动
-  mesh.position.x -= 1
+  mesh.position.x -= 1;
 
-  renderer.render(scene, camera)
+  renderer.render(scene, camera);
   // stats.end()
 
-  requestAnimationFrame(render)
+  requestAnimationFrame(render);
 }
 
 function initStats(){
@@ -85,18 +85,18 @@ function initStats(){
   document.body.appendChild( stats.dom );
 }
 function threeStart(){
-  initRenderer()
-  initCamera()
-  initScene()
-  initLight()
-  initObject()
-  initStats()
-  render()
+  initRenderer();
+  initCamera();
+  initScene();
+  initLight();
+  initObject();
+  initStats();
+  render();
 
 
 }
 
 window.onload = function(){
-  threeStart()
-}
+  threeStart();
+};
 

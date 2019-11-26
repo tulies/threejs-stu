@@ -27,6 +27,7 @@
     camera.lookAt(0, 0, 0)
     camera.up.set(0, 1, 0)
 
+
     // 对相机进行控制
     controls = new THREE.TrackballControls( camera );
     controls.rotateSpeed = 5.0;

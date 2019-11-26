@@ -11,5 +11,7 @@
   "dependencies": {
     "three": "^0.106.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^6.7.1"
+  }
 }

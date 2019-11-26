@@ -1,3 +1,7 @@
+import * as THREE from '../../../node_modules/three/build/three.module.js';
+
+
+
 var width = document.getElementById('canvas-frame').clientWidth;
 var height = document.getElementById('canvas-frame').clientHeight;
 
