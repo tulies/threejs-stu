@@ -16,7 +16,7 @@
     // 相机
     camera = new THREE.PerspectiveCamera(60, width/height, 0.01,100000);
     // camera.position.z = 0.2;
-    camera.position.set(0, 0, 2550)
+    camera.position.set(0, 0,1600)
     // camera.lookAt(0, 0, 0)
     // camera.up.set(0, 1, 0)
 
@@ -181,9 +181,9 @@
 
     // console.log(121)
     var time = Date.now() * 0.01
-    mesh.rotation.y = time * 0.1
-    mesh.rotation.z = time * 0.1
-    mesh.rotation.x = time * 0.1
+    mesh.rotation.y = time * 0.03
+    mesh.rotation.z = time * 0.03
+    mesh.rotation.x = time * 0.03
     renderer.render( scene, camera );
     requestAnimationFrame( render );
   }
