@@ -3,6 +3,14 @@
   const init = ()=>{
     // 创建场景
     const scene = new THREE.Scene();
+    // 给场景增加雾化效果，通过Fog或FogExp2
+    // scene.fog = new THREE.Fog(0xFFFFFF, 0.15, 100);
+    //scene.fog = new THREE.FogExp2(0xFFFFFF, 0.01);
+
+    // 让场景内所有物体共享同一个材质
+    scene.overrideMaterial = new THREE.MeshLambertMaterial({
+      color: 0xFFFFFF
+    });
     // 创建摄相机
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight,0.1, 1000);
     // 渲染场景的时候，Camera对象会自动地被添加进来，但是我们手动添加它会是一个更好的选择，尤其是当你需要处理多个摄像机的时候。
@@ -15,7 +23,6 @@
     renderer.setClearColor(new THREE.Color(0x000000));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
-
 
     //  在场景中显示坐标轴
     // const axes = new THREE.AxesHelper(20);
@@ -41,7 +48,7 @@
     penumbra - 聚光锥的半影衰减百分比。在0和1之间的值。默认为0。
     decay - 沿着光照距离的衰减量。
     */
-    const spotLight = new THREE.SpotLight(0xFFFFFF, 1.2, 150, Math.PI*0.5); // 这个120是不是搞错了
+    const spotLight = new THREE.SpotLight(0xFFFFFF, 1, 150, Math.PI/4); // 这个120是不是搞错了
     spotLight.position.set(-40, 40, -15);
     spotLight.castShadow = true; // 定义能够产生阴影的光源
     scene.add(spotLight);
@@ -50,7 +57,9 @@
     const ambienLight = new THREE.AmbientLight(0x3c3c3c);
     scene.add(ambienLight);
 
+    // camera.position.set(-30, 40, 30);
     camera.position.set(-30, 40, 30);
+
     camera.lookAt(scene.position);
     document.getElementById('webgl-frame').append(renderer.domElement);
 
