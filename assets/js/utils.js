@@ -188,7 +188,7 @@ function addDefaultCubeAndSphere(scene) {
   // create a cube
   var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
   var cubeMaterial = new THREE.MeshLambertMaterial({
-      color: 0xff0000
+      color: 0xff3333
   });
   var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
   cube.castShadow = true;

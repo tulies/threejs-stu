@@ -54,7 +54,9 @@
     const sphereLightGeometry = new THREE.SphereGeometry(0.2);
     const sphereLightMaterial = new THREE.MeshBasicMaterial({color:0xac6c25});
     const sphereLightMesh = new THREE.Mesh(sphereLightGeometry, sphereLightMaterial);
-    sphereLightMesh.position = new THREE.Vector3(3, 20, 3);
+    // sphereLightMesh.position = new THREE.Vector3(3, 20, 3);
+    sphereLightMesh.position.set(3, 20, 3);
+
     scene.add(sphereLightMesh);
 
 

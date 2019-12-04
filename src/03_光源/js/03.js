@@ -3,6 +3,8 @@
   const init = ()=>{
     const renderer = initRenderer();
     const camera = initCamera();
+    const trackballControls = initTrackballControls(camera, renderer);
+    const clock = new THREE.Clock();
     const scene = new THREE.Scene();
 
     // 环境光
@@ -20,44 +22,99 @@
     scene.add(pointLight);
 
     const lightHelper = new THREE.PointLightHelper(pointLight);
-    scene.add(lightHelper);
+    // scene.add(lightHelper);
 
     const shadowHelper = new THREE.CameraHelper(pointLight.shadow.camera);
-    scene.add(shadowHelper);
+    // scene.add(shadowHelper);
 
     // 光源位置的小点点
     const sphereLightGeometry = new THREE.SphereGeometry(0.2);
     const sphereLightMaterial = new THREE.MeshBasicMaterial({color:0xac6c25});
     const sphereLightMesh = new THREE.Mesh(sphereLightGeometry, sphereLightMaterial);
-    sphereLightMesh.position = new THREE.Vector3(3, 0, 5);
+    // sphereLightMesh.position = new THREE.Vector3(3, 0, 5);
+    sphereLightMesh.position.set(25, 5, 10);
     scene.add(sphereLightMesh);
-
 
 
     // 添加场景中对象
     addHouseAndTree(scene);
 
     // 控制元素
-    const controls = new function () {
-      this.intensity = ambientLight.intensity;
-      this.ambientColor = ambientLight.color.getStyle();
-      this.disableSpotlight = false;
-    };
+    let invert = 1;
+    let phase = 0;
+    const setupControls = () => {
+      var controls = new function () {
+        this.rotationSpeed = 0.01;
+        this.bouncingSpeed = 0.03;
+        this.ambientColor = ambientLight.color.getStyle();
+        this.pointColor = pointLight.color.getStyle();
+        this.intensity = 1;
+        this.distance = pointLight.distance;
+        this.showLightHelper = false;
+        this.showShadowHelper = false;
+      };
 
-    const gui = new dat.GUI();
-    gui.add(controls, 'intensity', 0, 3, 0.1).onChange(function () {
-      ambientLight.intensity = controls.intensity;
-    });
-    gui.addColor(controls, 'ambientColor').onChange(function () {
-      console.log(controls.ambientColor);
-      ambientLight.color = new THREE.Color(controls.ambientColor);
-    });
-    gui.add(controls, 'disableSpotlight').onChange(function (e) {
-      spotLight.visible = !e;
-    });
+      var gui = new dat.GUI();
+      gui.addColor(controls, 'ambientColor').onChange(function (e) {
+        ambientLight.color = new THREE.Color(e);
+      });
+
+      gui.addColor(controls, 'pointColor').onChange(function (e) {
+        pointLight.color = new THREE.Color(e);
+      });
+
+      gui.add(controls, 'distance', 0, 100).onChange(function (e) {
+        pointLight.distance = e;
+      });
+
+      gui.add(controls, 'intensity', 0, 3).onChange(function (e) {
+        pointLight.intensity = e;
+      });
+
+      gui.add(controls, 'showLightHelper').onChange(function (e) {
+        if (e) {
+          scene.add(lightHelper);
+        } else {
+          scene.remove(lightHelper);
+        }
+      });
+
+      gui.add(controls, 'showShadowHelper').onChange(function (e) {
+        if (e) {
+          scene.add(shadowHelper);
+        } else {
+          scene.remove(shadowHelper);
+        }
+      });
+
+      return controls;
+    };
+    const controls = setupControls();
 
     const render = ()=>{
+      lightHelper.update();
+      shadowHelper.update();
+
       stats.update();
+      pointLight.position.copy(sphereLightMesh.position);
+
+      // move the light simulation
+      if (phase > 2 * Math.PI) {
+        invert = invert * -1;
+        phase -= 2 * Math.PI;
+      } else {
+        phase += controls.rotationSpeed;
+      }
+      sphereLightMesh.position.z = +(25 * (Math.sin(phase)));
+      sphereLightMesh.position.x = +(14 * (Math.cos(phase)));
+      sphereLightMesh.position.y = 5;
+
+      if (invert < 0) {
+        var pivot = 14;
+        sphereLightMesh.position.x = (invert * (sphereLightMesh.position.x - pivot)) + pivot;
+      }
+
+      trackballControls.update(clock.getDelta());
       requestAnimationFrame(render);
       renderer.render(scene, camera);
     };
