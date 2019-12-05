@@ -3,7 +3,6 @@ class ThreeCase {
     this.stats = initStats();
     this.renderer = initRenderer({antialias: true});
     this.camera = initCamera();
-    this.camera.position.set(-50, 30, 50);
     this.scene = new THREE.Scene();
     this.trackballControls = initTrackballControls(this.camera, this.renderer);
     this.clock = new THREE.Clock();
@@ -11,44 +10,38 @@ class ThreeCase {
   }
   init(){
     this.initObject();
-
     this.initLight();
     this.initGUIControls();
   }
   initObject(){
-    const planeGeometry = new THREE.PlaneGeometry(70, 70, 1, 1);
-    const planeMaterial = new THREE.MeshStandardMaterial({
-      roughness: 0.044676705160855, // calculated from shininess = 1000
-      metalness: 0.0
+
+    const textureGrass = new THREE.TextureLoader().load('../../assets/textures/ground/grasslight-big.jpg');
+    textureGrass.wrapS = THREE.RepeatWrapping;
+    textureGrass.wrapT = THREE.RepeatWrapping;
+    textureGrass.repeat.set(10,10);
+
+    const planeGeometry = new THREE.PlaneGeometry(1000, 1000, 20, 20);
+    const planeMaterial = new THREE.MeshLambertMaterial({
+      // color: 0xFFFFFF
+      map: textureGrass
     });
-    this.plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    // plane.receiveShadow  = true;
-
-    // rotate and position the plane
-    this.plane.rotation.x = -0.5 * Math.PI;
-    this.plane.position.set(0, 0, 0);
-
-    // add the plane to the scene
-    this.scene.add(this.plane);
+    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.receiveShadow = true;
+    plane.position.set(15, 0, 0);
+    plane.rotation.x = -0.5 * Math.PI;
+    this.scene.add(plane);
 
 
-    const planeGeometry1 = new THREE.BoxGeometry(4, 10, 0);
-    const planeMaterial1 = new THREE.MeshBasicMaterial({color: 0xff0000,  side: THREE.BackSide });
-    this.plane1 = new THREE.Mesh(planeGeometry1, planeMaterial1);
-    this.plane1.position.set(-10, 10, -35);
-    this.scene.add(this.plane1);
+    // 添加2个几何体
+    const cubeAndSphere = addDefaultCubeAndSphere(scene);
+    const cube = cubeAndSphere.cube;
+    cube.geometry.faces.forEach(function (face) {
+      face.color.copy(new THREE.Color(Math.random() * 0xffffff));
+    });
+    cube.geometry.colorsNeedUpdate = true;
+    const sphere = cubeAndSphere.sphere;
+    // const plane = addGroundPlane(scene);
 
-    const planeGeometry2 = new THREE.BoxGeometry(4, 10, 0);
-    const planeMaterial2 = new THREE.MeshBasicMaterial({color: 0x00ff00});
-    this.plane2 = new THREE.Mesh(planeGeometry2, planeMaterial2);
-    this.plane2.position.set(0, 10, -35);
-    this.scene.add(this.plane2);
-
-    const planeGeometry3 = new THREE.BoxGeometry(4, 10, 0);
-    const planeMaterial3 = new THREE.MeshBasicMaterial({color: 0x0000ff});
-    this.plane3 = new THREE.Mesh(planeGeometry3, planeMaterial3);
-    this.plane3.position.set(10, 10, -35);
-    this.scene.add(this.plane3);
   }
   initLight(){
 
