@@ -52,7 +52,22 @@ class ThreeCase {
     spotLight0.lookAt(this.plane);
     this.scene.add(spotLight0);
 
+    var spotLight = new THREE.DirectionalLight(0xffffff);
+    spotLight.position.set(30, 10, -50);
+    spotLight.castShadow = true;
+    spotLight.target = this.plane;
+    spotLight.distance = 0;
+    spotLight.shadow.camera.near = 2;
+    spotLight.shadow.camera.far = 200;
+    spotLight.shadow.camera.left = -100;
+    spotLight.shadow.camera.right = 100;
+    spotLight.shadow.camera.top = 100;
+    spotLight.shadow.camera.bottom = -100;
+    spotLight.shadow.mapSize.width = 2048;
+    spotLight.shadow.mapSize.height = 2048;
+    this.scene.add(spotLight);
 
+<<<<<<< HEAD
     var pointColor = "#ffffff";
     //    var spotLight = new THREE.SpotLight( pointColor);
     var spotLight = new THREE.DirectionalLight(pointColor);
@@ -90,6 +105,40 @@ class ThreeCase {
 
   }
   initGUIControls(){
+=======
+  }
+  initGUIControls(){
+    // const controls = {
+    //   color1:this.areaLight1.color.getHex(),
+    //   intensity1:this.areaLight1.intensity,
+    //   color2:this.areaLight2.color.getHex(),
+    //   intensity2:this.areaLight2.intensity,
+    //   color3:this.areaLight3.color.getHex(),
+    //   intensity3:this.areaLight3.intensity,
+    // };
+    // const gui = new dat.GUI();
+    // gui.addColor(controls, 'color1').onChange(e=>{
+    //   this.areaLight1.color = new THREE.Color(e);
+    //   this.plane1.material.color.set(new THREE.Color(e));
+    // });
+    // gui.add(controls, 'intensity1', 0, 1000).onChange(e=>{
+    //   this.areaLight1.intensity = e;
+    // });
+    // gui.addColor(controls, 'color2').onChange(e=>{
+    //   this.areaLight2.color = new THREE.Color(e);
+    //   this.plane2.material.color.set(new THREE.Color(e));
+    // });
+    // gui.add(controls, 'intensity2', 0, 1000).onChange(e=>{
+    //   this.areaLight2.intensity = e;
+    // });
+    // gui.addColor(controls, 'color3').onChange(e=>{
+    //   this.areaLight3.color = new THREE.Color(e);
+    //   this.plane3.material.color.set(new THREE.Color(e));
+    // });
+    // gui.add(controls, 'intensity3', 0, 1000).onChange(e=>{
+    //   this.areaLight3.intensity = e;
+    // });
+>>>>>>> 0503ee47121f1e7e3aa32111b930c6f11850e4b8
 
   }
   render(){
