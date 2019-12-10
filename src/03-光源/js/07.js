@@ -13,12 +13,6 @@ class ThreeCase {
     this.clock = new THREE.Clock();
     this.init();
   }
-  init(){
-    this.initObject();
-    this.initLight();
-    this.initLensFlare();
-    this.initGUIControls();
-  }
   initObject(){
 
     const textureGrass = new THREE.TextureLoader().load('../../assets/textures/ground/grasslight-big.jpg');
@@ -131,12 +125,15 @@ class ThreeCase {
     // });
 
   }
-
-
+  init(){
+    this.initObject();
+    this.initLight();
+    this.initLensFlare();
+    this.initGUIControls();
+  }
   render(){
     this.stats.update();
     this.trackballControls.update();
-
 
     this.cubeAndSphere.cube.rotation.x += this.controls.rotationSpeed;
     this.cubeAndSphere.cube.rotation.y += this.controls.rotationSpeed;
@@ -147,16 +144,22 @@ class ThreeCase {
     this.cubeAndSphere.sphere.position.x = 20 + (10 * (Math.cos(this.step)));
     this.cubeAndSphere.sphere.position.y = 2 + (10 * Math.abs(Math.sin(this.step)));
 
-
-
     requestAnimationFrame(()=>{
       this.render();
     });
     this.renderer.render(this.scene, this.camera);
+  }
+  resize(){
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 }
 
 (function(){
   const threeCase = new ThreeCase();
   threeCase.render();
+  window.addEventListener('resize', ()=>{
+    threeCase.resize();
+  }, false);
 })();

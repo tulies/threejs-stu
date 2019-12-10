@@ -96,8 +96,6 @@
 
     render();
     window.addEventListener('resize', onResize, false);
-
-
   };
 
   init();
