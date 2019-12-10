@@ -1,8 +1,13 @@
 class ThreeCase {
   constructor(){
+    this.step = 0;
     this.stats = initStats();
-    this.renderer = initRenderer({antialias: true});
+    this.renderer = initRenderer({
+      alpha: true
+    });
     this.camera = initCamera();
+    this.camera.position.set(-20, 10, 45);
+    this.camera.lookAt(new THREE.Vector3(10, 0, 0));
     this.scene = new THREE.Scene();
     this.trackballControls = initTrackballControls(this.camera, this.renderer);
     this.clock = new THREE.Clock();
@@ -11,6 +16,7 @@ class ThreeCase {
   init(){
     this.initObject();
     this.initLight();
+    this.initLensFlare();
     this.initGUIControls();
   }
   initObject(){
@@ -32,90 +38,75 @@ class ThreeCase {
     this.scene.add(this.plane);
 
     // 添加2个几何体
-    const cubeAndSphere = addDefaultCubeAndSphere(this.scene);
-    const cube = cubeAndSphere.cube;
-    cube.geometry.faces.forEach(function (face) {
+    this.cubeAndSphere = addDefaultCubeAndSphere(this.scene);
+    // const cube = cubeAndSphere.cube;
+    this.cubeAndSphere.cube.geometry.faces.forEach(function (face) {
       face.color.copy(new THREE.Color(Math.random() * 0xffffff));
     });
-    cube.geometry.colorsNeedUpdate = true;
-    const sphere = cubeAndSphere.sphere;
+    this.cubeAndSphere.cube.geometry.colorsNeedUpdate = true;
+    // const sphere = cubeAndSphere.sphere;
     // const plane = addGroundPlane(scene);
-
-
 
   }
   initLight(){
-    // 一点点光
-    const spotLight0 = new THREE.SpotLight(0xcccccc);
-    spotLight0.position.set(-40, 60, -10);
-    spotLight0.intensity = 0.1;
-    spotLight0.lookAt(this.plane);
-    this.scene.add(spotLight0);
 
-    var spotLight = new THREE.DirectionalLight(0xffffff);
-    spotLight.position.set(30, 10, -50);
-    spotLight.castShadow = true;
-    spotLight.target = this.plane;
-    spotLight.distance = 0;
-    spotLight.shadow.camera.near = 2;
-    spotLight.shadow.camera.far = 200;
-    spotLight.shadow.camera.left = -100;
-    spotLight.shadow.camera.right = 100;
-    spotLight.shadow.camera.top = 100;
-    spotLight.shadow.camera.bottom = -100;
-    spotLight.shadow.mapSize.width = 2048;
-    spotLight.shadow.mapSize.height = 2048;
-    this.scene.add(spotLight);
+    var ambiColor = "#1c1c1c";
+    var ambientLight = new THREE.AmbientLight(ambiColor);
+    this.scene.add(ambientLight);
 
-<<<<<<< HEAD
-    var pointColor = "#ffffff";
-    //    var spotLight = new THREE.SpotLight( pointColor);
-    var spotLight = new THREE.DirectionalLight(pointColor);
-    spotLight.position.set(30, 10, -50);
-    spotLight.intensity = 1;
-    spotLight.castShadow = true;
-    spotLight.shadowCameraNear = 0.1;
-    spotLight.shadowCameraFar = 100;
-    spotLight.shadowCameraFov = 50;
-    spotLight.target = this.plane;
-    spotLight.distance = 0;
-    spotLight.shadowCameraNear = 2;
-    spotLight.shadowCameraFar = 200;
-    spotLight.shadowCameraLeft = -100;
-    spotLight.shadowCameraRight = 100;
-    spotLight.shadowCameraTop = 100;
-    spotLight.shadowCameraBottom = -100;
-    spotLight.shadowMapWidth = 2048;
-    spotLight.shadowMapHeight = 2048;
-    this.spotLight = spotLight;
+
+    this.spotLight = new THREE.SpotLight(0xcccccc);
+    this.spotLight.position.set(-40, 60, -10);
+    this.spotLight.lookAt(this.plane);
     this.scene.add(this.spotLight);
 
-  }
-    // 镜头眩晕的代码,需要额外导入js文件 /libs/three/objects/Lensflare.js
+    this.directionalLight = new THREE.DirectionalLight(0xffffff);
+    this.directionalLight.position.set(30, 10, -50);
+    // this.directionalLight.intensity =5;
+    this.directionalLight.castShadow = true;
+    this.directionalLight.target = this.plane;
+    this.directionalLight.distance = 0;
+    this.directionalLight.shadow.camera.near = 2;
+    this.directionalLight.shadow.camera.far = 200;
+    this.directionalLight.shadow.camera.left = -100;
+    this.directionalLight.shadow.camera.right = 100;
+    this.directionalLight.shadow.camera.top = 100;
+    this.directionalLight.shadow.camera.bottom = -100;
+    this.directionalLight.shadow.mapSize.width = 2048;
+    this.directionalLight.shadow.mapSize.height = 2048;
+    this.scene.add(this.directionalLight);
 
+    // const lightHelper = new THREE.DirectionalLightHelper(this.directionalLight);
+    // this.scene.add(lightHelper);
+
+  }
   initLensFlare(){
-    const textureFlare0 = THREE.ImageUtils.loadTexture("../../assets/textures/flares/lensflare0.png");
+    const textureFlare0 = new THREE.TextureLoader().load('../../assets/textures/flares/lensflare0.png');
+    const textureFlare3 = new THREE.TextureLoader().load("../../assets/textures/flares/lensflare3.png");
+
     // const textureFlare3 = THREE.ImageUtils.loadTexture("../../assets/textures/flares/lensflare3.png");
 
     const flareColor = new THREE.Color(0xffaacc);
-    const lensFlare = new THREE.LensFlare(textureFlare0, 350, 0.0, THREE.AdditiveBlending, flareColor);
-    lensFlare.position.copy(this.spotLight.position);
-    this.scene.add(lensFlare);
 
+    // const lensflare = new THREE.Lensflare(textureFlare0, 350, 0.0, THREE.AdditiveBlending, flareColor);
+    // lensflare.position.copy(this.directionalLight.position);
+    // this.directionalLight.add(lensflare);
+    // this.directionalLight.add(lensflare);
+
+    const lensFlare = new THREE.Lensflare();
+    lensFlare.addElement(new THREE.LensflareElement(textureFlare0, 350, 0.0, flareColor));
+    lensFlare.addElement(new THREE.LensflareElement(textureFlare3, 60, 0.6, flareColor));
+    lensFlare.addElement(new THREE.LensflareElement(textureFlare3, 70, 0.7, flareColor));
+    lensFlare.addElement(new THREE.LensflareElement(textureFlare3, 120, 0.9, flareColor));
+    lensFlare.addElement(new THREE.LensflareElement(textureFlare3, 70, 1.0, flareColor));
+    this.directionalLight.add(lensFlare);
 
   }
   initGUIControls(){
-=======
-  }
-  initGUIControls(){
-    // const controls = {
-    //   color1:this.areaLight1.color.getHex(),
-    //   intensity1:this.areaLight1.intensity,
-    //   color2:this.areaLight2.color.getHex(),
-    //   intensity2:this.areaLight2.intensity,
-    //   color3:this.areaLight3.color.getHex(),
-    //   intensity3:this.areaLight3.intensity,
-    // };
+    this.controls = {
+      rotationSpeed:0.03,
+      bouncingSpeed:0.03,
+    };
     // const gui = new dat.GUI();
     // gui.addColor(controls, 'color1').onChange(e=>{
     //   this.areaLight1.color = new THREE.Color(e);
@@ -138,12 +129,26 @@ class ThreeCase {
     // gui.add(controls, 'intensity3', 0, 1000).onChange(e=>{
     //   this.areaLight3.intensity = e;
     // });
->>>>>>> 0503ee47121f1e7e3aa32111b930c6f11850e4b8
 
   }
+
+
   render(){
     this.stats.update();
     this.trackballControls.update();
+
+
+    this.cubeAndSphere.cube.rotation.x += this.controls.rotationSpeed;
+    this.cubeAndSphere.cube.rotation.y += this.controls.rotationSpeed;
+    this.cubeAndSphere.cube.rotation.z += this.controls.rotationSpeed;
+
+    // bounce the sphere up and down
+    this.step += this.controls.bouncingSpeed;
+    this.cubeAndSphere.sphere.position.x = 20 + (10 * (Math.cos(this.step)));
+    this.cubeAndSphere.sphere.position.y = 2 + (10 * Math.abs(Math.sin(this.step)));
+
+
+
     requestAnimationFrame(()=>{
       this.render();
     });
