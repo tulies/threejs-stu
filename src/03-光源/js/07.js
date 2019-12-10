@@ -3,7 +3,7 @@ class ThreeCase {
     this.step = 0;
     this.stats = initStats();
     this.renderer = initRenderer({
-      alpha: true
+      alpha: true  // lensflare下 好像要为true，不过测试了好像没有多大区别
     });
     this.camera = initCamera();
     this.camera.position.set(-20, 10, 45);
