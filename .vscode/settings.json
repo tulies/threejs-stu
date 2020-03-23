@@ -1,9 +1,11 @@
 {
     "editor.tabSize": 2,
-    "eslint.autoFixOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
     "eslint.validate": [
         "javascript"
     ],
     "path-autocomplete.extensionOnImport": true,
-    "javascript.updateImportsOnFileMove.enabled": "always",
+    "javascript.updateImportsOnFileMove.enabled": "always"
 }

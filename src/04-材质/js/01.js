@@ -158,7 +158,8 @@ class ThreeCase {
   }
   render(){
     this.stats.update();
-    this.trackballControls.update();
+    const delta = this.clock.getDelta();
+    this.trackballControls.update(delta);
 
     this.selectedMesh.rotation.y += 0.01;
 

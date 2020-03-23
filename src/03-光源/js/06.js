@@ -129,7 +129,8 @@ class ThreeCase {
   }
   render(){
     this.stats.update();
-    this.trackballControls.update();
+    const delta = this.clock.getDelta();
+    this.trackballControls.update(delta);
     requestAnimationFrame(()=>{
       this.render();
     });

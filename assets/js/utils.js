@@ -95,7 +95,6 @@ function initDefaultDirectionalLighting(scene, initialPosition) {
   dirLight.shadow.mapSize.width = 2048;
   dirLight.shadow.mapSize.height = 2048;
   dirLight.castShadow = true;
-
   dirLight.shadow.camera.left = -200;
   dirLight.shadow.camera.right = 200;
   dirLight.shadow.camera.top = 200;

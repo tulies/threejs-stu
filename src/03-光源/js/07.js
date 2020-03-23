@@ -133,7 +133,8 @@ class ThreeCase {
   }
   render(){
     this.stats.update();
-    this.trackballControls.update();
+    const delta = this.clock.getDelta();
+    this.trackballControls.update(delta);
 
     this.cubeAndSphere.cube.rotation.x += this.controls.rotationSpeed;
     this.cubeAndSphere.cube.rotation.y += this.controls.rotationSpeed;

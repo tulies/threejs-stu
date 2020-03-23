@@ -128,8 +128,8 @@
     let step = 0;
     const render = () => {
       stats.update();
-      trackballControls.update(clock.getDelta());
-
+      const delta = this.clock.getDelta();
+      this.trackballControls.update(delta);
       // lightHelper.update();
       // shadowHelper.update();
 
